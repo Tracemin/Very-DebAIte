@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "crates/shared",
     "crates/server",
+    "crates/web",
 ]
 
 [workspace.package]
@@ -39,7 +40,7 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 thiserror = "1"
 anyhow = "1"
-uuid = { version = "1", features = ["v4", "serde"] }
+uuid = { version = "1", features = ["v4", "serde", "js"] }
 chrono = { version = "0.4", features = ["serde"] }
 dotenvy = "0.15"
 sha2 = "0.10"
