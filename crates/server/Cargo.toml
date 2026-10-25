@@ -1,0 +1,35 @@
+[package]
+name = "server"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+shared.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+futures-util.workspace = true
+async-stream.workspace = true
+axum.workspace = true
+tower.workspace = true
+tower-http.workspace = true
+http.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+reqwest.workspace = true
+async-trait.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+dotenvy.workspace = true
+sha2.workspace = true
+pdf-extract.workspace = true
+
+[dev-dependencies]
+tokio-tungstenite = { version = "0.24", features = ["connect"] }
+wiremock = "0.6"
+tower = { workspace = true, features = ["util"] }
