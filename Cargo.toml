@@ -1,0 +1,84 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/shared",
+    "crates/server",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Very-DebAIte Team"]
+license = "MIT"
+
+[workspace.dependencies]
+# Shared dependencies
+tokio = { version = "1", features = ["full"] }
+axum = "0.7"
+tower = "0.4"
+tower-http = { version = "0.5", features = ["fs", "trace", "cors"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+thiserror = "1"
+anyhow = "1"
+
+# Web dependencies
+axum-server = "0.6"
+hyper = "1"
+hyper-util = { version = "0.1", features = ["full"] }
+http-body-util = "0.1"
+
+# Leptos
+leptos = "0.6"
+leptos-confusable = "0.1"
+leptos-dom = "0.6"
+leptos_meta = "0.6"
+leptos_router = "0.6"
+wasm-bindgen = "0.2"
+
+# Utilities
+reqwest = { version = "0.12", features = ["json"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+once_cell = "1"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Very-DebAIte Team"]
+license = "MIT"
+
+[workspace.dependencies]
+# Shared dependencies
+tokio = { version = "1", features = ["full"] }
+axum = "0.7"
+tower = "0.4"
+tower-http = { version = "0.5", features = ["fs", "trace", "cors"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+thiserror = "1"
+anyhow = "1"
+
+# Web dependencies
+axum-server = "0.6"
+hyper = "1"
+hyper-util = { version = "0.1", features = ["full"] }
+http-body-util = "0.1"
+
+# Leptos
+leptos = "0.6"
+leptos-confusable = "0.1"
+leptos-dom = "0.6"
+leptos_meta = "0.6"
+leptos_router = "0.6"
+wasm-bindgen = "0.2"
+
+# Utilities
+reqwest = { version = "0.12", features = ["json"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+once_cell = "1"
