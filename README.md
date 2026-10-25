@@ -1,61 +1,51 @@
 # Very-DebAIte
 
-Multi-agent fact checker: two debating LLM agents (proponent and skeptic) collect
-arguments, a judge produces a verdict, and the whole run is streamed to the
-browser over WebSocket. The backend is a Rust workspace with an in-memory store
-(30-minute TTL, no database, no authentication) intended to run on localhost.
+Мультиагентная система проверки фактов: два спорящих LLM-агента (сторонник и скептик) собирают аргументы, судья выносит вердикт, а весь процесс транслируется в браузер через WebSocket. Бэкенд — это рабочее пространство на Rust с хранилищем в памяти (TTL 30 минут, без базы данных, без аутентификации), предназначенное для работы на localhost.
 
-The authoritative contract is [`docs/SPEC.md`](docs/SPEC.md).
+Авторитетным контрактом является [`docs/SPEC.md`](docs/SPEC.md).
 
-## Layout
+## Структура
 
 ```
-crates/shared   Wire types, validation, verdict post-processing, canary redaction
-crates/server   HTTP API, WebSocket streaming, orchestration, LLM providers
+crates/shared   Типы передачи данных, валидация, постобработка вердикта, редактирование канареек
+crates/server   HTTP API, WebSocket-стриминг, оркестрация, LLM-провайдеры
 ```
 
-`crates/web` is owned by the frontend and is intentionally not part of this
-workspace. The server serves a built frontend from `dist/` when it exists.
+`crates/web` принадлежит фронтенду и намеренно не входит в это рабочее пространство. Сервер раздаёт собранный фронтенд из `dist/`, если он существует.
 
-## Requirements
+## Требования
 
-- Stable Rust (edition 2021)
-- An OpenAI-compatible chat-completions provider for real checks
+- Стабильный Rust (редакция 2021)
+- Провайдер chat-completions, совместимый с OpenAI, для реальных проверок
 
-## Run
+## Запуск
 
 ```bash
 cp .env.example .env
-# fill LLM_BASE_URL, LLM_API_KEY, LLM_MODEL_DEBATER, LLM_MODEL_JUDGE
+# заполните LLM_BASE_URL, LLM_API_KEY, LLM_MODEL_DEBATER, LLM_MODEL_JUDGE
 cargo run -p server
 ```
 
-The server binds to `127.0.0.1:3000` by default. Without a configured provider
-it still starts; `GET /ready` reports the degradation and new checks are
-rejected with a structured error.
+По умолчанию сервер слушает `127.0.0.1:3000`. Без настроенного провайдера он всё равно запускается; `GET /ready` сообщает о деградации, а новые проверки отклоняются со структурированной ошибкой.
 
-### Demo replay
+### Демо-воспроизведение
 
-`DEMO_MODE=replay` serves recorded model outputs from `fixtures/`, keyed by
-`PROMPT_VERSION` and a hash of the claim and attachment text. `DEMO_MODE=record`
-writes fixtures for successful runs. Recordings are provider/model output and
-must be reviewed before committing.
+`DEMO_MODE=replay` раздаёт записанные выводы модели из `fixtures/`, с ключом по `PROMPT_VERSION` и хешу текста утверждения и вложения. `DEMO_MODE=record` записывает фикстуры для успешных запусков. Записи — это вывод провайдера/модели, и их необходимо проверить перед коммитом.
 
 ## API
 
-| Method | Path | Purpose |
+| Метод | Путь | Назначение |
 |---|---|---|
-| `GET` | `/health` | Liveness, always `200` |
-| `GET` | `/ready` | Provider and demo-mode readiness |
-| `POST` | `/api/check` | Start a check (`multipart/form-data`: `claim`, optional `file`) |
-| `GET` | `/api/check/{id}` | Current check result |
-| `DELETE` | `/api/check/{id}` | Cancel and delete a check |
-| `GET` | `/ws/{id}` | WebSocket: snapshot first, then ordered events |
+| `GET` | `/health` | Проверка живости, всегда `200` |
+| `GET` | `/ready` | Готовность провайдера и демо-режима |
+| `POST` | `/api/check` | Запустить проверку (`multipart/form-data`: `claim`, опционально `file`) |
+| `GET` | `/api/check/{id}` | Текущий результат проверки |
+| `DELETE` | `/api/check/{id}` | Отменить и удалить проверку |
+| `GET` | `/ws/{id}` | WebSocket: сначала снимок состояния, затем упорядоченные события |
 
-Checks are in-memory only and expire after 30 minutes. Rate limits are applied
-per IP (`RATE_LIMIT_PER_IP`, default `5/10min,2`) plus a global hourly cap.
+Проверки хранятся только в памяти и истекают через 30 минут. Ограничения скорости применяются по IP (`RATE_LIMIT_PER_IP`, по умолчанию `5/10min,2`) плюс глобальный почасовой лимит.
 
-## Checks
+## Проверки
 
 ```bash
 cargo fmt --all --check
@@ -63,9 +53,6 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace
 ```
 
-## Configuration
+## Конфигурация
 
-See [`.env.example`](.env.example). Required variables are `LLM_BASE_URL`,
-`LLM_API_KEY`, `LLM_MODEL_DEBATER`, and `LLM_MODEL_JUDGE`; the rest have safe
-defaults. Secrets belong in the environment only — never in `dist/`, git, or
-logs.
+См. [`.env.example`](.env.example). Обязательные переменные — `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL_DEBATER` и `LLM_MODEL_JUDGE`; остальные имеют безопасные значения по умолчанию. Секреты должны находиться только в окружении — никогда в `dist/`, git или логах.
