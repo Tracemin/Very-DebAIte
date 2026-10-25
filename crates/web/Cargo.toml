@@ -1,0 +1,36 @@
+[package]
+name = "very-debate-web"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+shared = { path = "../shared" }
+
+leptos = { version = "0.6", features = ["csr"] }
+wasm-bindgen-futures = "0.4"
+console_error_panic_hook = "0.1"
+
+gloo-net = { version = "0.6", features = ["http", "websocket"] }
+gloo-timers = { version = "0.3", features = ["futures"] }
+futures-util = { version = "0.3", default-features = false, features = ["std"] }
+
+chrono = { version = "0.4", features = ["serde"] }
+serde_json = "1.0"
+js-sys = "0.3"
+
+[dependencies.web-sys]
+version = "0.3"
+features = [
+    "Window",
+    "Location",
+    "Storage",
+    "File",
+    "FileList",
+    "Blob",
+    "FormData",
+    "HtmlInputElement",
+    "HtmlTextAreaElement",
+    "Event",
+    "InputEvent",
+    "SubmitEvent",
+]
